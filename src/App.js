@@ -8,13 +8,31 @@ class Timer extends Component {
   constructor() {
     super();
     this.state = {
+      countDown : false,
       remainingSeconds : 25 * 60,
     };
   }
 
   componentDidMount() {
+    // setInterval(() => {
+    //   if (this.state.remainingSeconds > 0) {
+    //     this.setState(prevState => {
+    //       return {remainingSeconds : prevState.remainingSeconds - 1};
+    //     });
+    //   }
+    // }, 1000);
+  }
+
+  handleStart() {
+    this.setState(prevState => {
+      return {
+        remainingSeconds : 25 * 60, 
+        countDown : true,
+      };
+    });
+
     setInterval(() => {
-      if (this.state.remainingSeconds > 0) {
+      if ((this.state.remainingSeconds > 0) && this.state.countDown) {
         this.setState(prevState => {
           return {remainingSeconds : prevState.remainingSeconds - 1};
         });
@@ -22,10 +40,31 @@ class Timer extends Component {
     }, 1000);
   }
 
+  handleStop() {
+    this.setState(prevState => {
+      return {
+        remainingSeconds : prevState.remainingSeconds,
+        countDown : false,
+      };
+    });
+  }
+
+  handleReset() {
+    this.setState(prevState => {
+      return {
+        remainingSeconds : 25 * 60, 
+        countDown : false,
+      };
+    });
+  }
+
   render() {
     return (
       <div>
         <p>Remaining time: {this.state.remainingSeconds}</p>
+        <button className="start" onClick={() => this.handleStart()}> Start </button>
+        <button className="stop" onClick={() => this.handleStop()}> Stop </button>
+        <button className="reset" onClick={() => this.handleReset()}> Reset </button>
       </div>
     );
   }
