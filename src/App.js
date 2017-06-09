@@ -10,6 +10,7 @@ class Timer extends Component {
     this.state = {
       countDown : false,
       remainingSeconds : 25 * 60,
+      interval : null,
     };
   }
 
@@ -24,32 +25,36 @@ class Timer extends Component {
   }
 
   handleStart() {
-    this.setState(prevState => {
-      return {
-        remainingSeconds : 25 * 60, 
-        countDown : true,
-      };
-    });
-
-    setInterval(() => {
+    var ival = setInterval(() => {
       if ((this.state.remainingSeconds > 0) && this.state.countDown) {
         this.setState(prevState => {
           return {remainingSeconds : prevState.remainingSeconds - 1};
         });
       }
     }, 1000);
+
+    this.setState(prevState => {
+      return {
+        remainingSeconds : prevState.remainingSeconds, 
+        countDown : true,
+        interval : ival,
+      };
+    });
   }
 
   handleStop() {
+    clearInterval(this.state.interval);
     this.setState(prevState => {
       return {
         remainingSeconds : prevState.remainingSeconds,
         countDown : false,
+        interval : null,
       };
     });
   }
 
   handleReset() {
+    clearInterval(this.state.interval);
     this.setState(prevState => {
       return {
         remainingSeconds : 25 * 60, 
