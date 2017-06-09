@@ -14,16 +14,6 @@ class Timer extends Component {
     };
   }
 
-  componentDidMount() {
-    // setInterval(() => {
-    //   if (this.state.remainingSeconds > 0) {
-    //     this.setState(prevState => {
-    //       return {remainingSeconds : prevState.remainingSeconds - 1};
-    //     });
-    //   }
-    // }, 1000);
-  }
-
   handleStart() {
     var ival = setInterval(() => {
       if ((this.state.remainingSeconds > 0) && this.state.countDown) {
@@ -63,13 +53,52 @@ class Timer extends Component {
     });
   }
 
+  formatRemainingSeconds(remainingSeconds) {
+    let numMinutes = Math.floor(remainingSeconds / 60);
+    let numSeconds = remainingSeconds % 60;
+    let formattedTime = "";
+
+    if (numMinutes.toString().length == 1) {
+      formattedTime += '0';
+      formattedTime += numMinutes.toString();
+    } else {
+      formattedTime += numMinutes.toString();
+    }
+
+    formattedTime += ":";
+
+    if (numSeconds.toString().length == 1) {
+      formattedTime += '0';
+      formattedTime += numSeconds.toString();
+    } else {
+      formattedTime += numSeconds.toString();
+    }
+
+    return formattedTime;
+  }
+
   render() {
     return (
       <div>
-        <p>Remaining time: {this.state.remainingSeconds}</p>
-        <button className="start" onClick={() => this.handleStart()}> Start </button>
-        <button className="stop" onClick={() => this.handleStop()}> Stop </button>
-        <button className="reset" onClick={() => this.handleReset()}> Reset </button>
+        <h1> {this.formatRemainingSeconds(this.state.remainingSeconds)} </h1>
+        <button 
+          className="start" 
+          style={{backgroundColor:'green'}} 
+          onClick={() => this.handleStart()}> 
+            Start 
+        </button>
+        <button 
+          className="stop" 
+          style={{backgroundColor:'red'}}
+          onClick={() => this.handleStop()}> 
+            Stop 
+        </button>
+        <button  
+          className="reset" 
+          style={{backgroundColor:'gray'}}
+          onClick={() => this.handleReset()}> 
+            Reset 
+        </button>
       </div>
     );
   }
